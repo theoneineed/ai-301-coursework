@@ -141,7 +141,7 @@ The disclosure of AI has been an issue as enforcing it slightly strictly causes 
 ## Claude issue evaluation
 
 This was the json response from claude when asked to analyze the comment before posting to github.
-
+```json
   {
     "item": "https://github.com/codepath/pathreview-ai301-fa26-s1/issues/1",
     "checks": [
@@ -158,7 +158,7 @@ AI disclosure and the comment makes no assignment demand or guarantee."}
   ],
   "verdict": "accept"
 }
-
+```
 ---
 
 Related paths: `eval-run.txt` in this directory; your skill's files in
