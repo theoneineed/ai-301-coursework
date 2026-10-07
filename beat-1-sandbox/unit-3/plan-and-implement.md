@@ -42,16 +42,6 @@ https://github.com/codepath/pathreview-ai301-fa26-s1/issues/1#issuecomment-60314
 --- Execution finished. Result returned: IngestResult(source_id='test-repo-123', chunk_count=0, skipped=True, skip_reason='Source already ingested') ---
 ```
 
-**Existing unit tests**
-```text
-============================== test session starts ===============================
-platform linux -- Python 3.11.x, pytest-8.x.x, pluggy-1.x.x
-rootdir: /workspace/pathreview-ai301-fa26-s1
-collected XX items
-
-tests/unit/... PASSED
-============================== 100% passed in X.XXs ===============================
-```
 
 ## Eval iterations
 
