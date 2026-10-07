@@ -1,1 +1,1 @@
-Unit 4 uploads your installed `pr-precheck` folder here (the current files from `~/.claude/skills/pr-precheck/`).
+Unit 3 uploads your installed `plan-check` folder here (the current files from `~/.claude/skills/plan-check/`).
