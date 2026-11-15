@@ -1,8 +1,5 @@
 # Contribution: Defect: issue with reading files due to a bug in pm.vis.Subplot file
 
-Path: `beat-2-contribution/contribution-story.md`
-
-
 **Contribution Number:** 1
 **Student:** Nabin Chapagain
 **GitHub Username:** theoneineed
@@ -10,21 +7,21 @@ Path: `beat-2-contribution/contribution-story.md`
 **Pull Request:** https://github.com/cdslaborg/paramonte/pull/53
 
 
-
 ---
 
 ## Toolkit
-**Unit 5: Manual issue discovery in ParaMonte instead of running issue-scout**
 
-I did not install or run `issue-scout` for this contribution. Instead, I uncovered a real bug while using ParaMonte (`cdslaborg/paramonte`) in MATLAB R2025b for my own simulation and visualization workflow on macOS. Because I already understood the package and its setup, I chose to report and fix that bug directly rather than onboarding onto an unfamiliar repository from an automated search scan.
+**Unit 5: Grading my ParaMonte issue with issue-scout and uncovering an assignee blind spot**
+
+I updated my `issue-scout` fit profile (`scope.md`) to target MATLAB, C/C++, CMake, and scientific simulation software, then ran `issue-scout: grade https://github.com/cdslaborg/paramonte/issues/52` on the bug I discovered in ParaMonte. Four of the five checks passed (`maintainer-active`, `human-authored`, `valid-policy`, and `manageable-scope`), but `unclaimed` failed with a `reject` verdict because `assignees: ["theoneineed"]` was non-empty and my own PR #53 had already merged. This revealed a concrete flaw in `rubric.md`: the `unclaimed` rule treats any assignee as a competing claim rather than checking whether the assignee matches my own GitHub handle (`theoneineed`).
 
 **Unit 6: Manual root-cause analysis and upstream communication without voice-guard**
 
-I did not set up or use `voice-guard` or a repo-memory file during this phase. I manually inspected the ParaMonte MATLAB source files, traced the class-parsing failure in `Subplot.m` to unescaped Doxygen comment markers, and wrote the issue report and pull request descriptions myself in plain technical prose.
+I did not install or use `voice-guard` or a repo-memory file during this contribution. I manually inspected the ParaMonte MATLAB source files, traced the class-parsing failure in `Subplot.m` to Fortran-style `!>` Doxygen comment markers preceding `classdef`, and wrote the issue report and pull request descriptions myself in plain technical prose.
 
 **Unit 7: Manual local verification and PR submission without ship-gate**
 
-I did not install or run `ship-gate` or create a `ship-manifest.md` file. I verified my `Subplot.m` fix locally in MATLAB R2025b by re-running the failing chain-reading functions, then submitted PR #53 manually; when I later bundled additional fixes into a second pull request (PR #54), skipping a pre-submission scope check led me to combine unrelated changes in one PR.
+I did not install or run `ship-gate` or create a `ship-manifest.md` file. I verified my `Subplot.m` fix locally in MATLAB R2025b by re-running `pm.runSampler()` and checking that the output figures rendered properly, then submitted PR #53 manually; when I later bundled additional fixes into a second pull request (PR #54), skipping a pre-submission scope check led me to combine unrelated changes in one PR.
 
 **Unit 8: Manual maintainer follow-up and branch maintenance without pr-monitor**
 
@@ -34,92 +31,95 @@ I did not install or use `pr-monitor` or an automated response playbook. I read 
 
 ## Why I Chose This Issue
 
-**Claim Comment:** Not applicable — I discovered and filed the issue myself at https://github.com/cdslaborg/paramonte/issues/52 rather than claiming an existing issue from the AI301 Issue Selection site.
+**Claim Comment:** None posted on GitHub — I discovered and filed Issue #52 myself at https://github.com/cdslaborg/paramonte/issues/52 rather than claiming an existing issue from the AI301 Issue Selection site.
 
-I discovered this issue organically while running ParaMonte for my own Monte Carlo simulation and post-processing work in MATLAB R2025b on macOS, rather than finding it through `issue-scout` or the AI301 Issue Selection site. When I tried to read and plot simulation outputs using `readChain` and `readSample`, the visualization step crashed inside `pm.vis.Subplot`. Choosing a real bug I had already reproduced in software I actively used meant I could focus immediately on diagnosing and fixing the root cause instead of spending time learning a brand-new codebase from scratch.
+I discovered this bug organically while running ParaMonte (`cdslaborg/paramonte`) in MATLAB R2025b on macOS for my own Monte Carlo simulation and post-processing workflow. When I ran `pm.runSampler()`, the simulation completed but crashed during post-sampling visualization inside `pm.vis.Subplot`. When I evaluated the issue against my `issue-scout` fit profile (`scope.md`, configured for MATLAB, C/C++, CMake, and scientific computing libraries) using `issue-scout: grade https://github.com/cdslaborg/paramonte/issues/52`, the scout passed `maintainer-active`, `human-authored`, `valid-policy`, and `manageable-scope`, but returned `verdict: "reject"` on `unclaimed` (`assignees: ["theoneineed"]` was non-empty after maintainer `@shahmoradi` assigned the issue to me on October 13, 2025, and my own PR #53 had already merged on October 15, 2025). Proceeding with this issue was still the right choice because it matched my domain profile and solved a real blocker in software I actively use.
 
-Looking honestly at my tool workflow, skipping `issue-scout` worked well for issue selection because personal domain familiarity let me isolate the `Subplot.m` bug quickly. However, working entirely without automated pre-PR checks later showed a downside when I opened a follow-up pull request (PR #54) that bundled multiple unrelated fixes together instead of keeping every change isolated like PR #53.
+Running `issue-scout` on a real self-filed issue exposed a clear limitation in `rubric.md`: the `unclaimed` check inspects `assignees` blindly without comparing the assignee username against the student's own GitHub handle (`theoneineed`), causing it to flag a student's own self-assigned issue as "already claimed." Updating `rubric.md` to exempt the contributor's own username in `assignees` would prevent that false negative.
 
 **Toolkit**
 
-- Tool: Manual discovery in my own ParaMonte workflow (did not use `issue-scout`)
-- What it produced: Direct identification and filing of Issue #52 (`pm.vis.Subplot` file-reading/visualization defect) on `cdslaborg/paramonte`
-- Difficulties: None for finding the initial bug, though bypassing structured scouting and scoping habits later led me to bundle unrelated follow-up fixes into PR #54
-- What changed: Nothing in `issue-scout`; I kept PR #53 focused strictly on `Subplot.m` and took away the process rule to isolate every separate bug into its own PR
+- Tool: `issue-scout` (`scope.md` fit profile and `rubric.md` via `issue-scout: grade https://github.com/cdslaborg/paramonte/issues/52`)
+- What it produced: Passed 4/5 checks (`maintainer-active`, `human-authored`, `valid-policy`, `manageable-scope`) and returned `verdict: "reject"` solely on `unclaimed` because `assignees: ["theoneineed"]` was non-empty and PR #53 was already merged
+- Difficulties: `rubric.md` failed to distinguish an external claim from the issue being assigned to me (`theoneineed`), producing a false rejection
+- What changed: Identified the missing self-assignee exemption in `rubric.md` (`assignees` check) and kept PR #53 tightly scoped to `Subplot.m`
 
 ---
 
 ## Understanding the Issue
+
 **Problem Description**
 
-Post-sampling read utilities in ParaMonte's MATLAB interface (`readChain`, `readSample`, and related read functions) fail during the visualization phase because MATLAB cannot recognize `pm.vis.Subplot` as a valid class definition.
+ParaMonte's MATLAB sampler and post-sampling read utilities (`pm.runSampler()`, `readChain`, and `readSample`) fail during the visualization phase because MATLAB cannot recognize `pm.vis.Subplot` as a valid class definition.
 
 **Expected Behavior**
 
-Calling `readChain` or `readSample` on completed ParaMonte output files should read the chain/sample data from disk and initialize `pm.vis.Subplot` cleanly so downstream visualization classes (such as `pm.vis.Subplotheatmap`) can generate plots without errors.
+Running `pm.runSampler()` (or calling `readChain` / `readSample` on completed output files) should read the generated chain/sample data from disk and initialize `pm.vis.Subplot` cleanly so downstream visualization classes (such as `pm.vis.Subplotheatmap`) can render figures without errors.
 
 **Current Behavior**
 
-ParaMonte opens and reads the output file from disk, but as soon as the read function invokes `pm.vis.Subplotheatmap`—which in turn calls `pm.vis.Subplot`—MATLAB throws an error stating that it cannot find or recognize the `pm.vis.Subplot` function/class.
+ParaMonte runs the sampler and reads the output file from disk, but as soon as the post-sampling visualization step invokes `pm.vis.Subplotheatmap`—which in turn calls `pm.vis.Subplot`—MATLAB throws an error stating that it cannot find or recognize the `pm.vis.Subplot` function/class.
 
 **Affected Components**
 
-- `src/matlab/main/+pm/+vis/Subplot.m` (superclass for ParaMonte MATLAB visualization objects, specifically lines 10–19 and lines 289–298)
-- `src/matlab/main/+pm/+vis/Subplotheatmap.m` and post-sampling read functions (`readChain`, `readSample`) that depend on `pm.vis.Subplot`
+- `src/matlab/main/+pm/+vis/Subplot.m` (superclass for ParaMonte MATLAB visualization objects, specifically lines `10–19` in the header comment block before `classdef` on line `192`, and lines `289–298` inside the class body)
+- `src/matlab/main/+pm/+vis/Subplotheatmap.m`, `pm.runSampler()`, and post-sampling read functions (`readChain`, `readSample`) that depend on `pm.vis.Subplot`
 
 **Toolkit**
 
 - Tool: Manual code inspection in MATLAB R2025b (no automated analysis skill used)
-- What it produced: Traced the failure from `readChain`/`readSample` -> `pm.vis.Subplotheatmap` -> `src/matlab/main/+pm/+vis/Subplot.m`, pinpointing Fortran-style `!>` Doxygen markers preceding `classdef`
-- Difficulties: The runtime error initially pointed to `pm.vis.Subplotheatmap` not finding `pm.vis.Subplot`, which required inspecting `Subplot.m` directly to see why MATLAB rejected the class file
+- What it produced: Traced the failure from `pm.runSampler()` -> `pm.vis.Subplotheatmap` -> `src/matlab/main/+pm/+vis/Subplot.m`, pinpointing Fortran-style `!>` Doxygen markers preceding `classdef`
+- Difficulties: The runtime error surfaced inside `pm.vis.Subplotheatmap` rather than naming the syntax error inside `Subplot.m`, requiring direct inspection of `Subplot.m`
 - What changed: Nothing in course tools; documented the exact file path and line numbers (`line 10` and `line 289`) directly in Issue #52
 
 ---
 
 ## Reproduction Process
+
 **Environment Setup**
 
 - **Hardware & OS:** Apple MacBook (Apple Silicon M1 Pro), macOS 26 Tahoe
 - **Runtime:** MATLAB R2025b
-- **Project Setup:** Downloaded the latest stable release of `cdslaborg/paramonte` from GitHub and built the package locally from source using the build script/binary rather than relying solely on a pre-packaged app bundle. During local setup and testing on macOS 26 Tahoe, I also encountered Xcode C MEX compilation friction and a secondary property typo in `getppm.m`, which I worked through locally while validating the full sampling-to-plotting pipeline.
+- **ParaMonte Version & Build:** ParaMonte 2 C, C++, Fortran prerelease (`Version 2024.04.29 -- C/C++/Fortran prerelease`, library target `libparamonte_matlab_darwin_arm64`), downloaded from GitHub and built locally from source using its build script/binary rather than using only the pre-built app bundle.
+- **Setup Friction & Resolution:** During local compilation on macOS 26 Tahoe, Xcode blocked building the original C MEX file (`src/matlab/xrc/pm_sampling.c`). I resolved that build friction locally by rewriting the MEX wrapper as a C++ file (`src/matlab/xrc/pm_sampling.cpp`) and enforcing `CXX` language compilation in `src/matlab/xrc/CMakeLists.txt` (later submitted in PR #54, where maintainer `@shahmoradi` noted that the C++ MEX implementation ran ~35× slower than the original C version; optimizing that C++ MEX overhead remains on my to-do list).
 
 **Steps to Reproduce**
 
-1. Build and load the stable ParaMonte MATLAB library in MATLAB R2025b on macOS (Apple Silicon).
-2. Run a ParaMonte sampling simulation (or load an existing output chain file) and call `readChain` or `readSample` with visualization enabled.
-3. Observe the execution failure when `pm.vis.Subplotheatmap` attempts to instantiate `pm.vis.Subplot`: MATLAB fails to locate/parse `pm.vis.Subplot` because `!>` Doxygen comment lines precede `classdef Subplot < pm.vis.axes.Axes` (line 192).
+1. Build and load `libparamonte_matlab_darwin_arm64` (ParaMonte 2 prerelease `Version 2024.04.29`) in MATLAB R2025b on macOS 26 Tahoe.
+2. Execute the MATLAB sampler via `pm.runSampler()` on a simulation run (which runs sampling and automatically invokes post-sampling chain reading and visualization; `readChain` alone only reads an already-generated chain file).
+3. Observe the failure during the post-sampling visualization step when `pm.vis.Subplotheatmap` attempts to call `pm.vis.Subplot`: MATLAB fails to locate/parse `pm.vis.Subplot` because Fortran-style `!>` Doxygen comment lines sit inside the header comment block (`lines 10–19`) preceding `classdef Subplot < pm.vis.axes.Axes` on `line 192`.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** Reproduced directly in my local MATLAB R2025b build and documented in https://github.com/cdslaborg/paramonte/issues/52 (fixed in commit `a6d7c76` via https://github.com/cdslaborg/paramonte/pull/53)
-- **Screenshots/logs:** Screenshot of the MATLAB error attached directly to Issue #52 (`https://github.com/cdslaborg/paramonte/issues/52`), accompanied by the reported symptom: *"The read functions could not be completed as it would open the file, read the file but moving onto the visualization aspect of read function, it would call pm.vis.Subplot from subplotheatmap function but matlab could not find the pm.vis.subplot function."*
-- **My findings:** In MATLAB syntax, `%` is the comment character while `!` is a shell-escape operator. Because `Subplot.m` contained Fortran-style `!>` Doxygen comment blocks starting at line 10 (before `classdef Subplot < pm.vis.axes.Axes` on line 192) and again at line 289, MATLAB treated the `!>` lines as non-comment executable statements and refused to parse the `classdef` block.
+- **Commit showing reproduction:** Reproduced locally in MATLAB R2025b and documented in https://github.com/cdslaborg/paramonte/issues/52 (fixed in commit https://github.com/cdslaborg/paramonte/commit/a6d7c76 via https://github.com/cdslaborg/paramonte/pull/53)
+- **Screenshots/logs:** Screenshot of the MATLAB error attached directly to Issue #52 (https://github.com/user-attachments/assets/27a68803-cb36-49eb-ab66-92636119ccde), accompanied by the reported symptom: (content of screenshot: Error using pm.vis.SubplotHeatmap The specified superclass 'pm.vis.Subplot' contains a parse error, cannot be found on Matlab's search path, or is shadowed by another file with the same name. Error in pm.vis.PlotHeatmap (line 84))
+- **My findings:** In `src/matlab/main/+pm/+vis/Subplot.m`, lines `1–191` form the top-of-file documentation header before `classdef Subplot < pm.vis.axes.Axes` begins on `line 192`. Because MATLAB treats `%` as a comment delimiter and `!` as a shell-escape operator, the Fortran-style `!>` Doxygen `\note` blocks at `lines 10–19` (before `classdef`) and `lines 289–298` (inside the class body) prevented MATLAB from recognizing `classdef` as the first executable statement.
 
 **Toolkit**
 
 - Tool: Manual reproduction in MATLAB R2025b (did not use `repro-check`)
-- What it produced: Confirmed reproducible crash in `readChain`/`readSample` and isolated the `!>` syntax conflict in `Subplot.m`
-- Difficulties: None met during reproduction of `Subplot.m`
+- What it produced: Confirmed reproducible crash during `pm.runSampler()` post-sampling visualization and isolated the `!>` syntax conflict in `Subplot.m`
+- Difficulties: Xcode C MEX compilation failed during initial source setup on macOS 26 Tahoe, requiring a local C++ MEX workaround (`pm_sampling.cpp`) before running MATLAB sampling end-to-end
 - What changed: Nothing in course tools
 
 ---
-
 ## Solution Approach
+
 **Analysis**
 
 `src/matlab/main/+pm/+vis/Subplot.m` mixed MATLAB comment markers (`%>`) with Fortran-style Doxygen markers (`!>`). While Doxygen recognizes both prefixes, MATLAB requires `classdef` to be the first executable statement in a class file and treats `!` as a shell escape rather than a comment. Converting the `!>` blocks to `%>` preserves Doxygen documentation generation while making the file valid MATLAB syntax.
 
 **Proposed Solution**
 
-Replace every `!>` Doxygen comment prefix in `src/matlab/main/+pm/+vis/Subplot.m` (lines 10–19 and 289–298) with `%>`. I deliberately left the documentation wording, Doxygen tags (`\note`, `@ref`), and all class methods and properties untouched so the fix remained minimal, safe, and easy to review.
+Replace every `!>` Doxygen comment prefix in `src/matlab/main/+pm/+vis/Subplot.m` (lines `10–19` and `289–298`) with `%>`. I deliberately left the documentation wording, Doxygen tags (`\note`, `@ref`), and all class methods and properties untouched so the fix remained minimal, safe, and easy to review.
 
 **Implementation Plan**
 
-1. Open `src/matlab/main/+pm/+vis/Subplot.m` and replace `!>` with `%>` in the header note block (lines 10–19).
-2. Replace `!>` with `%>` in the second note block (lines 289–298) in the same file.
-3. Re-run `readChain` and `readSample` in MATLAB R2025b to verify that `pm.vis.Subplot` loads cleanly and plots render.
+1. Open `src/matlab/main/+pm/+vis/Subplot.m` and replace `!>` with `%>` in the header note block (`lines 10–19`, before `classdef` on `line 192`).
+2. Replace `!>` with `%>` in the second note block (`lines 289–298`, inside the class body) in the same file, and search `src/matlab/` to verify no other `.m` files contain `!>` markers.
+3. Re-run `pm.runSampler()` in MATLAB R2025b to verify that `pm.vis.Subplot` loads cleanly and post-sampling figures render.
 
-*(Deviation note: PR #53 followed this exact 3-step plan and merged cleanly. Afterward, while testing additional parts of the macOS build, I opened a separate pull request—PR #54—where I deviated from single-issue scoping by bundling a `getppm.m` typo fix with CMake C++ flags and a new `pm_sampling.cpp` MEX file.)*
+*(Deviation note: PR #53 followed this exact 3-step plan and merged cleanly. Afterward, while testing additional parts of the macOS build, I opened a separate pull request—PR #54—where I deviated from single-issue scoping by bundling a `getppm.m` typo fix with CMake C++ flags and the `pm_sampling.cpp` MEX file.)*
 
 **Toolkit**
 
@@ -131,37 +131,39 @@ Replace every `!>` Doxygen comment prefix in `src/matlab/main/+pm/+vis/Subplot.m
 ---
 
 ## Testing Strategy
-Because `cdslaborg/paramonte` did not run an automated MATLAB CI suite on the pull request, I verified the change using direct before-and-after execution checks in MATLAB R2025b on macOS:
 
-1. **Before fix:** Running `readChain` and `readSample` on ParaMonte output files failed immediately when `pm.vis.Subplotheatmap` called `pm.vis.Subplot`, throwing an undefined class/function error.
-2. **After fix:** After changing `!>` to `%>` on lines 10–19 and 289–298 of `Subplot.m`, MATLAB parsed `classdef Subplot < pm.vis.axes.Axes` cleanly, and re-running `readChain` and `readSample` completed without errors and rendered the expected heatmap/subplot figures.
-3. **Diff inspection:** Checked `git diff` prior to opening PR #53 (+21/-21 lines in a single file) to confirm no unintended edits were included.
+Because `cdslaborg/paramonte` has no automated MATLAB CI test suite configured on pull requests, I verified the fix using codebase-wide pattern checks and before-and-after sampler execution in MATLAB R2025b on macOS:
+
+1. **Codebase-wide `!>` search:** Searched the rest of `src/matlab/` for Fortran-style `!>` Doxygen comment markers and confirmed that `Subplot.m` was the only MATLAB file affected by that pattern.
+2. **Before fix:** Running `pm.runSampler()` in MATLAB R2025b failed during post-sampling visualization when `pm.vis.Subplotheatmap` called `pm.vis.Subplot`, throwing an undefined class/function error before any figures could render.
+3. **After fix:** After changing `!>` to `%>` on lines `10–19` and `289–298` of `Subplot.m`, MATLAB parsed `classdef Subplot < pm.vis.axes.Axes` cleanly, and re-running `pm.runSampler()` completed end-to-end with all output figures generated and available without errors.
+4. **Diff inspection:** Checked `git diff` prior to opening PR #53 (`+21/-21` lines in a single file) to confirm only the intended comment markers were modified.
 
 **Toolkit**
 
-- Tool: Manual MATLAB R2025b execution and `git diff` review (did not use `pr-precheck`)
-- What it produced: Before/after runtime confirmation that `readChain`, `readSample`, and `pm.vis.Subplot` execute cleanly
-- Difficulties: No automated MATLAB test runner was configured upstream, requiring manual verification
+- Tool: Manual MATLAB R2025b execution, codebase search for `!>`, and `git diff` review (did not use `pr-precheck`)
+- What it produced: Before/after confirmation that `pm.runSampler()` completes and generates post-sampling figures cleanly, plus confirmation that no other `.m` files contained `!>` markers
+- Difficulties: No automated MATLAB test runner was configured upstream, requiring manual end-to-end sampler verification
 - What changed: Nothing in course tools
 
 ---
-
 ## Implementation Notes
+
 **2025-10-12**
 
-While running ParaMonte in MATLAB R2025b on my MacBook (Apple Silicon M1 Pro, macOS 26 Tahoe), `readChain` and `readSample` crashed during plotting. I traced the error to `!>` Doxygen comment blocks in `src/matlab/main/+pm/+vis/Subplot.m` (lines 10 and 289) preventing MATLAB from recognizing `classdef`, verified locally that changing `!>` to `%>` fixed the issue, and filed Issue #52 (`https://github.com/cdslaborg/paramonte/issues/52`).
+While running ParaMonte (`Version 2024.04.29`, `libparamonte_matlab_darwin_arm64`) in MATLAB R2025b on my MacBook (Apple Silicon M1 Pro, macOS 26 Tahoe), `pm.runSampler()` crashed during post-sampling plotting. I traced the error to `!>` Doxygen comment blocks in `src/matlab/main/+pm/+vis/Subplot.m` (`lines 10–19` before `classdef` on `line 192`, and `lines 289–298`) preventing MATLAB from recognizing `classdef`, confirmed no other files in `src/matlab/` used `!>`, verified locally that changing `!>` to `%>` restored figure generation, and filed Issue #52 (https://github.com/cdslaborg/paramonte/issues/52).
 
 **2025-10-14**
 
-Committed the `Subplot.m` fix (`a6d7c76`) and opened PR #53 (`https://github.com/cdslaborg/paramonte/pull/53`, "Update Subplot.m") with a clean +21/-21 single-file diff.
+Committed the `Subplot.m` fix (https://github.com/cdslaborg/paramonte/commit/a6d7c76) and opened PR #53 (https://github.com/cdslaborg/paramonte/pull/53, "Update Subplot.m") with a single-file diff.
 
 **2025-10-15**
 
-Maintainer `@shahmoradi` merged PR #53 into `main` (`2025-10-15T21:38:20Z`). Later that same day, after encountering a property typo (`self._weblinks` instead of `self.weblinks`) in `getppm.m` and Xcode C MEX build issues on macOS, I opened PR #54 (`https://github.com/cdslaborg/paramonte/pull/54`) bundling `getppm.m`, `CMakeLists.txt` C++ enforcement, and a new `pm_sampling.cpp` MEX implementation.
+Maintainer `@shahmoradi` merged PR #53 into `main` (`2025-10-15T21:38:20Z`). Later that same day, after encountering a property typo (`self._weblinks` instead of `self.weblinks`) in `getppm.m` and Xcode C MEX build issues on macOS, I opened PR #54 (https://github.com/cdslaborg/paramonte/pull/54) bundling `getppm.m`, `CMakeLists.txt` C++ enforcement, and `pm_sampling.cpp`.
 
 **2025-10-17**
 
-Maintainer `@shahmoradi` extracted the `getppm.m` fix from PR #54 into PR #55 (`https://github.com/cdslaborg/paramonte/pull/55`) and merged it into `main`, then commented on PR #54 explaining that the new C++ MEX file ran ~35× slower than the original C version and needed optimization and cross-platform testing. I merged `main` back into my fork branch (`2d2c7cfa`, `dfb0a673`) so PR #54's diff isolated only the remaining `CMakeLists.txt` and `pm_sampling.cpp` changes.
+Maintainer `@shahmoradi` extracted the `getppm.m` fix from PR #54 into PR #55 (https://github.com/cdslaborg/paramonte/pull/55) and merged it into `main`, then commented on PR #54 explaining that `pm_sampling.cpp` ran ~35× slower than the original C MEX file and needed optimization and cross-platform testing. I merged `main` back into my fork branch (`2d2c7cfa`, `dfb0a673`) so PR #54's diff isolated only the remaining `CMakeLists.txt` and `pm_sampling.cpp` changes.
 
 **Toolkit**
 
@@ -173,10 +175,9 @@ Maintainer `@shahmoradi` extracted the `getppm.m` fix from PR #54 into PR #55 (`
 ---
 
 ## Pull Request
+**PR Link:** https://github.com/cdslaborg/paramonte/pull/53
 
-**PR Link:** https://github.com/cdslaborg/paramonte/pull/53 (follow-up work in https://github.com/cdslaborg/paramonte/pull/54 and https://github.com/cdslaborg/paramonte/pull/55)
-
-**PR Description:** PR #53 ("Update Subplot.m", commit `a6d7c76`) updated `src/matlab/main/+pm/+vis/Subplot.m` (+21/-21 lines) to replace Fortran-style `!>` Doxygen comment prefixes on lines 10–19 and 289–298 with MATLAB-compatible `%>` comment markers so MATLAB recognizes `classdef Subplot < pm.vis.axes.Axes` and executes `readChain` and `readSample` visualizations properly:
+**PR Description:** PR #53 ("Update Subplot.m", commit https://github.com/cdslaborg/paramonte/commit/a6d7c76, files view: https://github.com/cdslaborg/paramonte/pull/53/files) updated `src/matlab/main/+pm/+vis/Subplot.m` (`+21/-21` lines) to replace Fortran-style `!>` Doxygen comment prefixes on lines `10–19` and `289–298` with MATLAB-compatible `%>` comment markers so MATLAB recognizes `classdef Subplot < pm.vis.axes.Axes` (line `192`) and executes `pm.runSampler()` visualizations properly:
 
 ```diff
 --- a/src/matlab/main/+pm/+vis/Subplot.m
@@ -233,8 +234,8 @@ Maintainer `@shahmoradi` extracted the `getppm.m` fix from PR #54 into PR #55 (`
 
 **Challenges Overcome**
 
-- Diagnosing why `readChain` and `readSample` failed during visualization when the error surfaced inside `pm.vis.Subplotheatmap`, tracing it back to comment syntax in the `Subplot` superclass.
-- Navigating build and post-sampling friction on a new macOS release by compiling ParaMonte from its source release and isolating defects across MATLAB and C/C++ build layers.
+- Diagnosing why `pm.runSampler()` failed during post-sampling visualization when the error surfaced inside `pm.vis.Subplotheatmap`, tracing it back to comment syntax in the `Subplot` superclass.
+- Navigating build and post-sampling friction on a new macOS release by compiling ParaMonte (`Version 2024.04.29`, `libparamonte_matlab_darwin_arm64`) from its source release and isolating defects across MATLAB and C/C++ build layers.
 
 **What I'd Do Differently Next Time**
 
